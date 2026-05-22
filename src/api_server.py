@@ -6,10 +6,13 @@ from typing import Any
 
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from .meta_generator import generate_meta
 
 app = FastAPI(title="Meta Agent API", version="0.1.0")
+
+Instrumentator().instrument(app).expose(app, endpoint="/metrics", include_in_schema=False)
 
 
 class MetaRequest(BaseModel):

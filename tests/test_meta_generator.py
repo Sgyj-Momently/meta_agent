@@ -190,3 +190,11 @@ class MetaEndpointTest(TestCase):
         self.assertEqual(body["project_id"], "sample")
         self.assertEqual(len(body["title_candidates"]), 3)
         self.assertGreaterEqual(len(body["hashtags"]), 1)
+
+    def test_metrics_endpoint_returns_prometheus_data(self):
+        client = TestClient(app)
+
+        response = client.get("/metrics")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("http_request_duration_seconds", response.text)
